@@ -1,0 +1,19 @@
+
+#f{
+
+    margin: 10px;
+
+}
+
+table{
+    width:90%;
+}
+
+td{
+    width:45%;
+    height:auto;
+}
+
+#first_div, #second_div, #third_div, #fourth_div{
+	height: 500px;
+}

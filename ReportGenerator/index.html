@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+
+<!--
+
+    get csv in - file.php
+
+    select charts to present - this page
+
+    csv to charts - charts.js
+
+    download as pdf   - convert then send back to php?
+
+-->
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="charts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+        approach(); 
+
+    $(document).ready(function(){
+
+        $("#fileSelect").change(function(){
+
+            var file = $('#fileSelect');
+            var reader = new FileReader();
+            var chartData = [];
+
+            reader.onload = function(e) {
+                var contents = e.target.result;
+                var lines = contents.split("\n");
+                var line = lines[0].split(",");
+                chartData[0] = line;
+                for (var i=1; i<lines.length; i++) {
+                    var line = lines[i].split(",");
+                    var valueLine = [];
+                    for (var j=0; j<line.length; j++) {
+                        valueLine[j] = Number(line[j]);
+                    }
+                    chartData[i] = valueLine;
+                }
+                console.log(JSON.stringify(chartData));
+                setInfo(chartData);
+            }
+            reader.readAsText(file[0].files[0]);
+        
+        });
+
+        $("#area").click(function(){
+
+            setArea(this.checked);
+
+            approach();
+
+        });
+
+        $("#bar").click(function(){
+
+            setBar(this.checked);
+
+            approach();
+
+        });
+
+        $("#column").click(function(){
+
+            setColumn(this.checked);
+
+            approach();
+
+        });
+
+        $("#donut").click(function(){
+
+            setDonut(this.checked);
+
+            approach();
+
+        });
+
+        $("#geo").click(function(){
+
+            setGeo(this.checked);
+
+            approach();
+
+        });
+
+        $("#line").click(function(){
+
+            setLine(this.checked);
+
+            approach();
+
+        });
+
+        $("#pie").click(function(){
+
+            setPie(this.checked);
+
+            approach();
+
+        });
+
+        $("#scatter").click(function(){
+
+            setScatter(this.checked);
+
+            approach();
+
+        });
+
+
+        $("#table").click(function(){
+
+            setTable(this.checked);
+
+            approach();
+
+        });
+
+    });
+
+    </script>
+
+</head>
+<body>
+
+<!--             SELECTION BAR              -->
+
+<div style="border:solid; border-color: black;  background-color: #CCC;">
+
+    <input type="file" name="f" id="fileSelect" placeholder="ex: C:\sample.csv"><br><br>
+    <!-- <input type="button" value="Open File" id="fileForm"><br><br> -->
+
+    <input type="checkbox" name="chartChk" value="area"      id="area"    >Area Chart<br>
+    <input type="checkbox" name="chartChk" value="bar"       id="bar"    >Bar Chart<br>
+    <input type="checkbox" name="chartChk" value="column"    id="column"    >Column Chart<br>
+    <input type="checkbox" name="chartChk" value="donut"     id="donut"    >Donut Chart<br>
+    <input type="checkbox" name="chartChk" value="geo"       id="geo"    >Geo Chart<br>
+    <input type="checkbox" name="chartChk" value="line"      id="line"    >Line Chart<br>
+    <input type="checkbox" name="chartChk" value="pie"       id="pie"    >Pie Chart<br>
+    <input type="checkbox" name="chartChk" value="scatter"   id="scatter"    >Scatter Chart<br>
+    <input type="checkbox" name="chartChk" value="table"     id="table"      >Table Chart<br>
+
+</div>
+
+
+<!--             CHART TABLE             -->
+
+
+<table align="center" border="solid">
+
+    <tr>
+        <td>
+            <div id="first_div" hidden="true">1</div>
+        </td>
+        <td>
+            <div id="second_div" hidden="true">2</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div id="third_div" hidden="true">3</div>
+        </td>
+        <td>
+            <div id="fourth_div" hidden="true">4</div>
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <div id="fifth_div" hidden="true">5</div>
+        </td>
+        <td>
+            <div id="sixth_div" hidden="true">6</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <div id="seventh_div" hidden="true">7</div>
+        </td>
+        <td>
+            <div id="eigth_div" hidden="true">8</div>
+        </td>
+
+    </tr>
+
+</table>
+
+
+</body>
+</html>

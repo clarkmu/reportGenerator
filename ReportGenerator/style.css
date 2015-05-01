@@ -1,0 +1,14 @@
+
+#f{
+    margin: 10px;
+}
+
+table{
+    width:90%;
+    empty-cells: hide;
+}
+
+td{
+    width:45%;
+    height:500px;
+}
