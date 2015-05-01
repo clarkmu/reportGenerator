@@ -22,7 +22,7 @@ function initialize(){
   
         reset();
         
-        loadCharts();
+        //loadCharts();
         
 }
 
