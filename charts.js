@@ -1,26 +1,21 @@
 /*
 
+Check boxes in index.html set showXXX variables in charts.js
 
-ints only - headers and each line of data, no totals
-scatter
-line
-bar
+selecting a file sends the parsed information (papaparse) into charts.js as theInformaics
 
-only two columns, each int
-
-
-needs totals line
-table, donut, pie
-
+API info
+get specific cell -  results.data[row][column]
+ex:  results.data[22]["header"]
 
 */
 
+var chart = new function(){ //OLN, this is a namespace
+    
+    var theInformatics = '',
 
-
-var theInformatics = '', fileCSV = '',
-
-    showArea = false, showBar = false, showColumn = false, showDonut = false, showGeo = false, 
-    showLine = false, showPie = false, showTable = false, showScatter = false,
+    showArea, showBar, showColumn, showDonut, showGeo, 
+    showLine, showPie, showTable, showScatter,
     
     headers = [],
     
@@ -28,27 +23,46 @@ var theInformatics = '', fileCSV = '',
     
     intColPosArr = [],
     
-    totalLine = [],
+    number_div = ["first", "second", 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth']//,
     
-    toType = function(obj) {
-      return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-    }
+    //toType = function(obj) {
+      //return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+    //}
     
     ;
 
-function initialize(){
+var initialize = function(){
   
   reset();
   
   if(firstRun){
+      
+    //load api only once, else we can't use a second file
+      
     firstRun = false;
     google.load("visualization", "1.1", {packages:["table", "corechart", "geochart", "scatter", "controls", "bar"], 'callback': loadCharts });
   }else
     loadCharts();
   
-}
+};
 
-function reset(){
+var reset = function(){
+    
+    //make all divs visisble again so firstAvailableDiv() works on next run
+
+    /*var count = number_div.length;
+    
+    //why does this not wok...
+    
+    for(var i = 0; i < count; i++){
+        
+        var div = number_div[i] + "_div";
+        
+        document.getElementById(div).hidden = true;
+        
+    }*/
+
+
 
     document.getElementById('first_div').hidden = true;
     document.getElementById('second_div').hidden = true;
@@ -58,57 +72,59 @@ function reset(){
     document.getElementById('sixth_div').hidden = true;
     document.getElementById('seventh_div').hidden = true;
     document.getElementById('eigth_div').hidden = true;
+    document.getElementById('ninth_div').hidden = true;
 
-}
+};
 
-function loadCharts(){
-
+var loadCharts = function(){
+/*
     if(showArea)
       try{
-        loadArea();
+        this.loadArea();
       }catch(e){alert("Failed to load Area.");}
 
     if(showBar)
       try{
-        loadBar();
+        this.loadBar();
       }catch(e){alert("Failed to load Bar.");}
 
     if(showColumn)
       try{
-        loadColumn();
+        this.loadColumn();
       }catch(e){alert("Failed to load Column.");}
 
     if(showDonut)
       try{
-        loadDonut();
+        this.loadDonut();
       }catch(e){alert("Failed to load Donut.");}
 
     if(showGeo)
       try{
-        loadGeo();
+        this.loadGeo();
       }catch(e){alert("Failed to load Table.");}
 
     if(showLine)
       try{
-        loadLine();
+        this.loadLine();
       }catch(e){alert("Failed to load Line.");}
 
     if(showPie)
       try{
-        loadPie();
+        this.loadPie();
       }catch(e){alert("Failed to load Pie.");}
 
     if(showScatter)
       try{
-          loadScatter();
+          this.loadScatter();
       }catch(e){alert("Failed to load Scatter.");}
 
     if(showTable)
       try{
-        loadTable();
+        this.loadTable();
       }catch(e){alert("Failed to load Table.");}
 
-/*
+/*  switch this for the above section to view errors in console*/
+
   if(showArea)
     loadArea();
 
@@ -135,59 +151,25 @@ function loadCharts(){
 
   if(showTable)
     loadTable();
-    */
-}
+    //*/
+};
 
-function unloadChart(chart){}
+var firstAvailableDiv = function(){  //place the chart wherever
 
-function firstAvailableDiv(){  //place the chart wherever
-
-    if( document.getElementById('first_div').hidden ){
-        document.getElementById('first_div').hidden = false;
-        return "first_div";
-    }
-
-    if( document.getElementById('second_div').hidden ) {
-        document.getElementById('second_div').hidden = false;
-        return "second_div";
-    }
-
-    if( document.getElementById('third_div').hidden ) {
-        document.getElementById('third_div').hidden = false;
-        return "third_div";
-    }
-
-    if( document.getElementById('fourth_div').hidden ) {
-        document.getElementById('fourth_div').hidden = false;
-        return "fourth_div";
-    }
+    var count = number_div.length;
     
-    if( document.getElementById('fifth_div').hidden ){
-        document.getElementById('fifth_div').hidden = false;
-        return "fifth_div";
+    for(var i = 0; i < count; i++){
+        
+        var div = number_div[i] + "_div";
+        
+        if( document.getElementById(div).hidden ){
+            document.getElementById(div).hidden = false;
+            return div;
+        }
+        
     }
 
-    if( document.getElementById('sixth_div').hidden ) {
-        document.getElementById('sixth_div').hidden = false;
-        return "sixth_div";
-    }
-
-    if( document.getElementById('seventh_div').hidden ) {
-        document.getElementById('seventh_div').hidden = false;
-        return "seventh_div";
-    }
-
-    if( document.getElementById('eigth_div').hidden ) {
-        document.getElementById('eigth_div').hidden = false;
-        return "eigth_div";
-    }
-    
-    if( document.getElementById('ninth_div').hidden ) {
-        document.getElementById('ninth_div').hidden = false;
-        return "eigth_div";
-    }
-
-}
+};
 
 
 
@@ -196,23 +178,22 @@ function firstAvailableDiv(){  //place the chart wherever
 
 
 
-function setInfo(info){
+this.setInfo = function(info){
     theInformatics = info;
     initialize();
-}
-function setArea(bool){ showArea = bool; }
-function setBar(bool){ showBar = bool; }
-function setColumn(bool){ showColumn = bool; }
-function setDonut(bool){ showDonut = bool; }
-function setGeo(bool){ showGeo = bool; }
-function setLine(bool){ showLine = bool; }
-function setPie(bool){ showPie = bool; }
-function setTable(bool){ showTable = bool; }
-function setScatter(bool){ showScatter = bool; }
+};
+this.setArea = function(bool){ showArea = bool; };
+this.setBar = function(bool){ showBar = bool; };
+this.setColumn = function(bool){ showColumn = bool; };
+this.setDonut = function(bool){ showDonut = bool; };
+this.setGeo = function(bool){ showGeo = bool; };
+this.setLine = function(bool){ showLine = bool; };
+this.setPie = function(bool){ showPie = bool; };
+this.setTable = function(bool){ showTable = bool; };
+this.setScatter = function(bool){ showScatter = bool; };
 
-function setHeaders(str){ headers = str; }
-function setIntColumnPositionArray(arr){ intColPosArr = arr; }
-function setTotalLine(arr){ totalLine = arr; }
+this.setHeaders = function(str){ headers = str; };
+this.setIntColumnPositionArray = function(arr){ intColPosArr = arr; };
 
 
 
@@ -220,7 +201,7 @@ function setTotalLine(arr){ totalLine = arr; }
 
 
 
-function loadArea() {
+var loadArea = function() {
 
   var data = getData();
 
@@ -233,9 +214,9 @@ function loadArea() {
     var chart = new google.visualization.AreaChart(document.getElementById(firstAvailableDiv()));
     chart.draw(data, options);
 
-}
+};
 
-function loadBar(){
+var loadBar = function(){
   
   var data = getData();
   
@@ -250,9 +231,9 @@ function loadBar(){
   var chart = new google.charts.Bar(document.getElementById(firstAvailableDiv()));
   chart.draw(data, options);
 
-}
+};
 
-function loadColumn(){
+var loadColumn = function(){
   
   var data = getData();
   
@@ -268,9 +249,9 @@ function loadColumn(){
   var chart = new google.visualization.ColumnChart(document.getElementById(firstAvailableDiv()));
   chart.draw(view, options);
 
-}
+};
 
-function loadDonut(){
+var loadDonut = function(){
 
   var data = getData();
 
@@ -284,9 +265,9 @@ function loadDonut(){
   var chart = new google.visualization.PieChart(document.getElementById(firstAvailableDiv()));
   chart.draw(data, options);
 
-}
+};
 
-function loadGeo(){
+var loadGeo = function(){
 
   var data = getData();
 
@@ -296,9 +277,9 @@ function loadGeo(){
 
   chart.draw(data, options);
 
-}
+};
 
-function loadLine(){
+var loadLine = function(){
     
   var data = getData();
 
@@ -314,9 +295,9 @@ function loadLine(){
 
     chart.draw(data, options);
 
-}
+};
 
-function loadPie(){
+var loadPie = function(){
 
   var data = getData();
     
@@ -330,9 +311,9 @@ function loadPie(){
 
   chart.draw(data, options);
 
-}
+};
 
-function loadScatter(){
+var loadScatter = function(){
   
   var data = getData();
 
@@ -346,13 +327,15 @@ function loadScatter(){
 
   chart.draw(data, options);
 
-}
+};
 
-function loadTable(){
+var loadTable = function(){
+    
+  //load each row and each header, don't use generic data function
         
   var data = new google.visualization.DataTable();
   
-  for(i = 0; i < headers.length; i++)
+  for(var i = 0; i < headers.length; i++)
     data.addColumn('string', headers[i] );
   
   for(var infoLineNumber = 0; infoLineNumber < theInformatics.length; infoLineNumber++){
@@ -372,24 +355,24 @@ function loadTable(){
 
     table.draw(data, {showRowNumber: false});
 
-}
+};
 
-function getData(){
+var getData = function(){
   
   var data = new google.visualization.DataTable();
   var head = headers[0];
   
   data.addColumn('string', head);
   
-  for(i = 0; i < intColPosArr.length; i++)
+  for(var i = 0; i < intColPosArr.length; i++)
     data.addColumn('number', headers[intColPosArr[i]] );
   
-  for( var infoLineNumber = 0; infoLineNumber < theInformatics.length; infoLineNumber++){
+  for( var j = 0; j < theInformatics.length; j++){
     
-    var rowData = [ theInformatics[infoLineNumber][head]  ];
+    var rowData = [ theInformatics[j][head]  ];
       
     for(i=0;i<intColPosArr.length; i++)
-      rowData.push( parseInt(theInformatics[infoLineNumber][headers[intColPosArr[i]]] ) );
+      rowData.push( parseInt(theInformatics[j][headers[intColPosArr[i]]] ) );
     
     try{ data.addRow(rowData); }catch(e){}
     
@@ -397,10 +380,9 @@ function getData(){
   
   return data;
   
-}
+};
 
-
-
+}();
 
 
 
