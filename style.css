@@ -1,18 +1,16 @@
 
+html{width: 100%;border: solid;}
+
 label, input[type=checkbox], .draggable { cursor: pointer; }
 label { text-transform:capitalize; }
 
 #content {padding : 0 0 20px 20px;}
 
-@media print{
-  #options{display: none;}
-  .draggable{border: none;resize:none;}
-  html{border: none;}
-}
+#instructions{padding: 10px;}
+
+#options{margin: 10px;width: auto;border: solid;border-color: black;background-color: #CCC;width: auto;}
 
 .draggable{border: solid;width: auto;}
-
-html{width: 100%;border: solid;}
 
 /*
   table{width: 99%;height: auto;empty-cells: hide;margin: 10px;align: center;}
@@ -20,6 +18,9 @@ html{width: 100%;border: solid;}
   td{width: 45%;height: 200px;}
 */
 
-#instructions{padding: 10px;}
-
-#options{margin: 10px;width: auto;border: solid;border-color: black;background-color: #CCC;width: auto;}
+@media print{
+  #options{display: none;}
+  #chartContainer { display: block; }
+  .draggable{border: none;resize:none;}
+  html{border: none;}
+}

@@ -19,6 +19,7 @@ new Vue({
   },
   methods: {
     initChart: function(){
+
       chart.setCharts(this.checkedCharts)
     },
     fileLoad: function(event){
@@ -58,10 +59,6 @@ var chart = new function(){
   var fileData = '',
     headers = [],
     intColPosArr = [],
-    reset = function(){
-
-      $("#chartContainer .draggable").remove()
-    },
     loadCharts = function(selectedCharts){
 
       var data = getData(),
@@ -77,98 +74,91 @@ var chart = new function(){
             minValue: data.getColumnRange(1).min, 
             maxValue: data.getColumnRange(1).max
           }
-        }
+        },
+        containers = document.getElementsByClassName('chartDisplayContainer')
 
-      if(selectedCharts.includes("area")){
-        new google.visualization
-          .AreaChart(createChartContainer())
-          .draw(data, defaultOptions)
-      }
+      for( var i = 0; i < containers.length; i++ ){
 
-      if(selectedCharts.includes("bar")){
-        new google.charts
-          .Bar(createChartContainer())
-          .draw(data, $.extend(defaultOptions, {
-            bar: {groupWidth: "95%"},
-            legend: { position: "none" }
-          }))
-      }
+        var container = containers[i],
+          chart = selectedCharts[i]
 
-      if(selectedCharts.includes("column")){
-        new google.visualization
-          .ColumnChart(createChartContainer())
-          .draw(data, $.extend(defaultOptions, {
-            bar: {groupWidth: "95%"},
-            legend: { position: "none" }
-          }))
-      }
+        console.log(chart, container)
 
-      if(selectedCharts.includes("donut")){
-        new google.visualization
-          .PieChart(createChartContainer())
-          .draw(data, $.extend(defaultOptions, {pieHole: 0.4}))
-      }
+        if( chart == "area" ){
 
-      if(selectedCharts.includes("geo")){
-        new google.visualization
-          .GeoChart(createChartContainer())
-          .draw(data, {})
-      }
+          new google.visualization
+            .AreaChart(container)
+            .draw(data, defaultOptions)
+        }else if(chart == "bar" ){
 
-      if(selectedCharts.includes("line")){
-        new google.visualization
-          .LineChart(createChartContainer())
-          .draw(data, $.extend(defaultOptions, {
-            curveType: 'function' ,
-            legend: { position: 'bottom'}
-          }))
-      }
+          new google.charts
+            .Bar(container)
+            .draw(data, $.extend({}, defaultOptions, {
+              bar: {groupWidth: "95%"},
+              legend: { position: "none" }
+            }))
+        }else if( chart == "column" ){
 
-      if(selectedCharts.includes("pie")){
-        new google.visualization
-          .PieChart(createChartContainer())
-          .draw(data, defaultOptions)
-      }
+          new google.visualization
+            .ColumnChart(container)
+            .draw(data, $.extend({}, defaultOptions, {
+              bar: {groupWidth: "95%"},
+              legend: { position: "none" }
+            }))
+        }else if( chart == "donut" ){
 
-      if(selectedCharts.includes("scatter")){
-        new google.visualization
-          .ScatterChart(createChartContainer())
-          .draw(data, defaultOptions)
-      }
+          new google.visualization
+            .PieChart(container)
+            .draw(data, $.extend({}, defaultOptions, {pieHole: 0.4}))
+        }else if( chart == "geo" ){
 
-      if(selectedCharts.includes("table")){
+          new google.visualization
+            .GeoChart(container)
+            .draw(data, {})
+        }else if( chart == "line" ){
 
-        var tableData = new google.visualization.DataTable() //load each row and each header, don't use generic data function
-        
-        for(var i = 0; i < headers.length; i++){
-          tableData.addColumn('string', headers[i] )
-        }
-        
-        for(var infoLineNumber = 0; infoLineNumber < fileData.length; infoLineNumber++){
+          new google.visualization
+            .LineChart(container)
+            .draw(data, $.extend({}, defaultOptions, {
+              curveType: 'function' ,
+              legend: { position: 'bottom'}
+            }))
+        }else if( chart == "pie" ){
+
+          new google.visualization
+            .PieChart(container)
+            .draw(data, defaultOptions)
+        }else if( chart == "scatter" ){
+
+          new google.visualization
+            .ScatterChart(container)
+            .draw(data, defaultOptions)
+        }else if( chart == "table" ){
+
+          var tableData = new google.visualization.DataTable() //load each row and each header, don't use generic data function
           
-          var rowData = []
-            
-          for(i=0;i<headers.length; i++){
-            rowData.push( fileData[infoLineNumber][headers[i]] )
+          for(var j = 0; j < headers.length; j++){
+            tableData.addColumn('string', headers[j] )
           }
           
-          tableData.addRow(rowData)
-        }
+          for(var infoLineNumber = 0; infoLineNumber < fileData.length; infoLineNumber++){
+            
+            var rowData = []
+              
+            for(j=0;j<headers.length; j++){
+              rowData.push( fileData[infoLineNumber][headers[j]] )
+            }
+            
+            tableData.addRow(rowData)
+          }
 
-        new google.visualization
-          .Table(createChartContainer())
-          .draw(tableData, {showRowNumber: false})
+          new google.visualization
+            .Table(container)
+            .draw(tableData, {showRowNumber: false})
+        }
       }
 
       $(".draggable").draggable({snap:true})
-    },
-    createChartContainer = function(){
-
-      var div = $("<div class='draggable'></div>")
-
-      $("#chartContainer").append(div)
-
-      return div[0]
     },
     getData = function(){
       
@@ -198,7 +188,6 @@ var chart = new function(){
   this.setHeaders = function(str){ headers = str }
   this.setIntColumnPositionArray = function(arr){ intColPosArr = arr }
   this.setCharts = function(selectedCharts){
-    reset()
     loadCharts(selectedCharts)
   }
 }
