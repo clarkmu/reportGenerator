@@ -1,114 +1,55 @@
 <!DOCTYPE HTML>
-
 <head>
-    <link rel="stylesheet" href="style.css">
-    <script src="jquery-2.1.3.js"></script>
-    <script src="papaparse.js"></script>
-    <script src="charts.js"></script>
-    <script type="text/javascript" src="jsapi.js"></script>
-    <script src="jquery-ui.js"></script>
-    <script src="pageEvents.js"></script>
-
+  <link rel="stylesheet" href="style.css">
+  <script src="jquery-2.1.3.js"></script>
+  <script src="papaparse.js"></script>
+  <script src="charts.js"></script>
+  <script type="text/javascript" src="jsapi.js"></script>
+  <script src="jquery-ui.js"></script>
+  <script src="pageEvents.js"></script>
 </head>
 <body>
-
-<!--             SELECTION BAR              -->
-
-<div id="options">
-
-    <p style="font-size: 0.8em; text-align:center;">This project is also available on <a href="https://github.com/clarkmu/reportGenerator">GitHub</a></p>
-  
-  <div id="instructions">
-    To Use:<ol>
-      <li>Select charts to place in PDF</li>
-      <li>Select .csv file (Charts expect first column to be words, all others to be number values)</li>
-      <li>Drag and drop charts</li>
-      <li>Right click page, select "Print...", select "Save as PDF"  (This box does not appear in PDF)</li>
-    </ol>
+  <div id="options">
+    <p style="font-size: 0.8em; text-align:center;">
+      This project is also available on <a href="https://github.com/clarkmu/reportGenerator">GitHub</a>
+    </p>
+    <div id="instructions">
+      To Use:<ol>
+        <li>Select charts to place in PDF</li>
+        <li>Select .csv file (Charts expect first column to be words, all others to be number values)</li>
+        <li>Drag and drop charts</li>
+        <li>Right click page, select "Print...", select "Save as PDF"  (This box does not appear in PDF)</li>
+      </ol>
+    </div>
+    <div v-for="chart in charts">
+      <input type="checkbox" v-bind:id="chart" v-bind:value="chart" v-model="checkedCharts"/>
+      <label v-bind:for="chart">{{chart}} Chart</label>
+    </div>
+    <input type="file" name="f" id="fileSelect">
   </div>
-
-    <div id="optionsContent">
-      
-      <div id="innerLeft">
-        <input type="checkbox" name="chartChk" value="area"      id="area"    >Area Chart<br>
-        <input type="checkbox" name="chartChk" value="bar"       id="bar"    >Bar Chart<br>
-        <input type="checkbox" name="chartChk" value="column"    id="column"    >Column Chart<br>
-        <input type="checkbox" name="chartChk" value="donut"     id="donut"    >Donut Chart<br>
-        <input type="checkbox" name="chartChk" value="geo"       id="geo"    >Geo Chart<br>
-      </div>
-      <div id="innerRight">
-        <input type="checkbox" name="chartChk" value="line"      id="line"    >Line Chart<br>
-        <input type="checkbox" name="chartChk" value="pie"       id="pie"    >Pie Chart<br>
-        <input type="checkbox" name="chartChk" value="scatter"   id="scatter"    >Scatter Chart<br>
-        <input type="checkbox" name="chartChk" value="table"     id="table"      >Table Chart<br><br><br>
-    </div>
-    
-    <input type="file" name="f" id="fileSelect"><br>
-    
-    </div>
-
-</div>
-
-
-<!--             CHART TABLE             -->
-
-
-
-
-      <div id="first_div" hidden="true" class="draggable">1</div>
-      <div id="second_div" hidden="true" class="draggable">2</div>
-      <div id="third_div" hidden="true" class="draggable">3</div>
-      <div id="fourth_div" hidden="true" class="draggable">4</div>
-      <div id="fifth_div" hidden="true" class="draggable">5</div>
-      <div id="sixth_div" hidden="true" class="draggable">6</div>
-      <div id="seventh_div" hidden="true" class="draggable">7</div>
-      <div id="eigth_div" hidden="true" class="draggable">8</div>
-      <div id="ninth_div" hidden="true" class="draggable">9</div>
-      
-
-
-<!--table align="center" border="solid">
-
-    <tr>
-        <td>
-            <div id="first_div" hidden="true">1</div>
-        </td>
-        <td>
-            <div id="second_div" hidden="true">2</div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            <div id="third_div" hidden="true">3</div>
-        </td>
-        <td>
-            <div id="fourth_div" hidden="true">4</div>
-        </td>
-
-    </tr>
-
-    <tr>
-        <td>
-            <div id="fifth_div" hidden="true">5</div>
-        </td>
-        <td>
-            <div id="sixth_div" hidden="true">6</div>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            <div id="seventh_div" hidden="true">7</div>
-        </td>
-        <td>
-            <div id="eigth_div" hidden="true">8</div>
-        </td>
-
-    </tr>
-
-</table-->
-
-
+  <!-- chart table -->
+    <div id="first_div" hidden="true" class="draggable">1</div>
+    <div id="second_div" hidden="true" class="draggable">2</div>
+    <div id="third_div" hidden="true" class="draggable">3</div>
+    <div id="fourth_div" hidden="true" class="draggable">4</div>
+    <div id="fifth_div" hidden="true" class="draggable">5</div>
+    <div id="sixth_div" hidden="true" class="draggable">6</div>
+    <div id="seventh_div" hidden="true" class="draggable">7</div>
+    <div id="eigth_div" hidden="true" class="draggable">8</div>
+    <div id="ninth_div" hidden="true" class="draggable">9</div>
+  <!-- end chart table -->
+  <script src="vue.js"></script>
+  <script>
+    new Vue({
+      el: '#options',
+      data: {
+        charts: [
+          "table", "pie", "area", "bar",
+          "column", "donut", "geo", "line", "scatter"
+        ],
+        checkedCharts: ['table','pie','area']
+      }
+    })
+  </script>
 </body>
 </html>
