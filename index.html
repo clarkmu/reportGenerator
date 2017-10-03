@@ -1,55 +1,39 @@
 <!DOCTYPE HTML>
 <head>
   <link rel="stylesheet" href="style.css">
-  <script src="jquery-2.1.3.js"></script>
-  <script src="papaparse.js"></script>
-  <script src="charts.js"></script>
-  <script type="text/javascript" src="jsapi.js"></script>
-  <script src="jquery-ui.js"></script>
-  <script src="pageEvents.js"></script>
 </head>
 <body>
   <div id="options">
-    <p style="font-size: 0.8em; text-align:center;">
-      This project is also available on <a href="https://github.com/clarkmu/reportGenerator">GitHub</a>
-    </p>
-    <div id="instructions">
-      To Use:<ol>
-        <li>Select charts to place in PDF</li>
-        <li>Select .csv file (Charts expect first column to be words, all others to be number values)</li>
-        <li>Drag and drop charts</li>
-        <li>Right click page, select "Print...", select "Save as PDF"  (This box does not appear in PDF)</li>
-      </ol>
+    <div id="content">
+      <p style="font-size: 0.8em; text-align:center;">
+        This project is also available on <a href="https://github.com/clarkmu/reportGenerator">GitHub</a>
+      </p>
+      <div id="instructions">
+        To Use:<ol>
+          <li>Select charts to include in print out</li>
+          <li>"Choose File" use .csv file exported from Google AdSense</li>
+          <li>Click "Start"</li>
+          <li>Drag and drop charts</li>
+          <li>Right click page, select "Print...", select "Save as PDF" (This box does not appear in PDF)</li>
+        </ol>
+      </div>
+      <div v-for="chart in charts">
+        <input type="checkbox" v-bind:value="chart" v-model="checkedCharts"/>
+        <label v-bind:for="chart">{{chart}} Chart</label>
+      </div>
+      <input type="file" v-on:change="fileLoad"><br>
+      <button v-on:click="initChart">Start</button>
     </div>
-    <div v-for="chart in charts">
-      <input type="checkbox" v-bind:id="chart" v-bind:value="chart" v-model="checkedCharts"/>
-      <label v-bind:for="chart">{{chart}} Chart</label>
-    </div>
-    <input type="file" name="f" id="fileSelect">
   </div>
-  <!-- chart table -->
-    <div id="first_div" hidden="true" class="draggable">1</div>
-    <div id="second_div" hidden="true" class="draggable">2</div>
-    <div id="third_div" hidden="true" class="draggable">3</div>
-    <div id="fourth_div" hidden="true" class="draggable">4</div>
-    <div id="fifth_div" hidden="true" class="draggable">5</div>
-    <div id="sixth_div" hidden="true" class="draggable">6</div>
-    <div id="seventh_div" hidden="true" class="draggable">7</div>
-    <div id="eigth_div" hidden="true" class="draggable">8</div>
-    <div id="ninth_div" hidden="true" class="draggable">9</div>
-  <!-- end chart table -->
-  <script src="vue.js"></script>
+  <div id="chartContainer"></div>
+  <script src="lib/jquery-2.1.3.js"></script>
+  <script src="lib/jquery-ui.js"></script>
+  <script src="lib/papaparse.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="lib/vue.js"></script>
+  <script src="charts.js"></script>
   <script>
-    new Vue({
-      el: '#options',
-      data: {
-        charts: [
-          "table", "pie", "area", "bar",
-          "column", "donut", "geo", "line", "scatter"
-        ],
-        checkedCharts: ['table','pie','area']
-      }
-    })
+    
   </script>
 </body>
 </html>

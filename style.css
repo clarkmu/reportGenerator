@@ -1,74 +1,25 @@
 
-label, input[type=checkbox] { cursor: pointer; }
+label, input[type=checkbox], .draggable { cursor: pointer; }
 label { text-transform:capitalize; }
 
+#content {padding : 0 0 20px 20px;}
+
 @media print{
-  #options{
-    display: none;
-  }
-  .draggable{
-    border: none;
-    resize:none;
-  }
-  html{
-    border: none;
-  }
+  #options{display: none;}
+  .draggable{border: none;resize:none;}
+  html{border: none;}
 }
 
-.draggable{
-  border: solid;
-  width: auto;
-}
+.draggable{border: solid;width: auto;}
 
-html{
-  width: 970px;
-  border: solid;
-}
+html{width: 100%;border: solid;}
 
-#f{
-  margin: 10px;
-}
+/*
+  table{width: 99%;height: auto;empty-cells: hide;margin: 10px;align: center;}
+  tr{width: 100%;}
+  td{width: 45%;height: 200px;}
+*/
 
-table{
-  width: 99%;
-  height: auto;
-  empty-cells: hide;
-  margin: 10px;
-  align: center;
-}
+#instructions{padding: 10px;}
 
-tr{
-  width: 100%;
-}
-
-td{
-  width: 45%;
-  height: 200px;
-}
-
-#instructions{
-  padding: 10px;
-}
-
-#options{
-  margin: 10px;
-  width: auto;
-  border: solid;
-  border-color: black;
-  background-color: #CCC;
-  width: auto;
-}
-
-#optionsContent{
-  font-size: 1.4em;
-  margin: 15px;
-}
-
-#innerLeft{
-  float:left;
-  width:auto;
-}
-
-#innerRight{
-  padding-left:15px;
-}
+#options{margin: 10px;width: auto;border: solid;border-color: black;background-color: #CCC;width: auto;}
